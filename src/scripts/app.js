@@ -11,7 +11,7 @@ const searchButton = document.getElementById('search-button');
 // ========== Search Handler Function ==========
 /**
  * Handles the search form submission
- * Validates input and logs the city name or alerts the user
+ * Validates input, fetches weather data from API, and logs the result
  * @param {Event} event - The form submission event
  */
 function handleSearch(event) {
@@ -27,11 +27,19 @@ function handleSearch(event) {
     return;
   }
 
-  // Log the city name to console
   console.log('Searching for city:', cityName);
 
-  // TODO: Add API call to fetch weather data here
-  // For now, we're just logging the city name
+  // Call API to fetch weather data
+  getWeatherByCity(cityName)
+    .then(data => {
+      console.log('Weather data received:', data);
+      // TODO: Update UI with weather data
+      displayWeather(data);
+    })
+    .catch(error => {
+      console.error('Error fetching weather:', error.message);
+      alert('Unable to fetch weather data. Please check the city name and try again.');
+    });
 }
 
 // ========== Event Listeners ==========
@@ -53,6 +61,33 @@ if (cityInput) {
   cityInput.addEventListener('input', function() {
     // Can be used to remove error messages or styles in the future
   });
+}
+
+// ========== Display Weather Function ==========
+/**
+ * Updates the UI with weather data
+ * @param {Object} data - Weather data from API
+ */
+function displayWeather(data) {
+  if (!data) return;
+
+  const tempElement = document.getElementById('temp');
+  const humidityElement = document.getElementById('humidity');
+  const windElement = document.getElementById('wind');
+
+  if (tempElement) {
+    tempElement.textContent = `${Math.round(data.main.temp)}°C`;
+  }
+
+  if (humidityElement) {
+    humidityElement.textContent = `${data.main.humidity}%`;
+  }
+
+  if (windElement) {
+    windElement.textContent = `${Math.round(data.wind.speed)} m/s`;
+  }
+
+  console.log('Weather display updated');
 }
 
 // ========== Initialization ==========
