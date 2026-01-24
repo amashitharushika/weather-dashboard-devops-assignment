@@ -91,9 +91,21 @@ function displayWeather(data) {
   console.log('Weather display updated');
 }
 
-// ========== Initialization ==========
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Weather Dashboard initialized');
-  // Focus the input field for better UX
-  cityInput.focus();
+document.addEventListener('DOMContentLoaded', () => {
+    const searchBtn = document.getElementById('search-btn'); // Check your HTML ID
+    const cityInput = document.getElementById('city-input'); // Check your HTML ID
+
+    searchBtn.addEventListener('click', () => {
+        const city = cityInput.value.trim();
+        if (city) {
+            // Call the function from api.js
+            window.getWeather(city); 
+        } else {
+            alert('Please enter a city name');
+        }
+    });
 });
+
+
+
+
