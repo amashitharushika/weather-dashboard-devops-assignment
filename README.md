@@ -27,6 +27,10 @@ We implemented the following branching strategy:
 * `develop` - Integration branch
 * `feature/**` - Feature development branches
 
+## Challenges
+Securing Secrets in a Serverless Architecture One significant challenge we encountered was managing the OpenWeatherMap API key within a strictly frontend-only environment. Since client-side JavaScript is visible to the end-user, embedding the key directly exposes it to potential misuse. While we hardcoded the key for this demonstration to ensure immediate functionality without a backend, we recognize this is a security vulnerability. In a production DevOps environment, we would mitigate this by implementing a Node.js proxy server or using Vercel Serverless Functions to store the key as a server-side environment variable, keeping it completely hidden from the client browser.
+
+
 ## Individual Contributions
 ### ITBIN-2313-0086
 * Repository initialization and branch protection rules.
