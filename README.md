@@ -1,2 +1,2 @@
-# Weather Dashboard - DevOps Deployment
-This project is a CI/CD demonstration using GitHub Actions.
+# Weather Dashboard - Full Stack Application
+A responsive weather application built with HTML, CSS, and JS.
