@@ -1,93 +1,169 @@
-/**
- * Weather API Module
- * Handles all API calls to OpenWeatherMap
- */
-
-// Configuration
-const API_KEY = 'YOUR_API_KEY';
+const API_KEY = 'f2f31dec0301180816db233799499d75'; 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
-/**
- * Fetch current weather data for a given city
- * @param {string} city - The city name to fetch weather for
- * @returns {Promise<Object>} - Promise resolving to weather data JSON
- */
-function getWeatherByCity(city) {
-  if (!city || typeof city !== 'string') {
-    return Promise.reject(new Error('City parameter must be a non-empty string'));
-  }
+// Function to fetch weather data
+async function getWeather(city) {
+    try {
+        console.log(`Fetching weather for: ${city}`); // Debugging log
 
-  const url = `${BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
+        // 2. Fetch Current Weather - Use encodeURIComponent for proper encoding
+        const currentResponse = await fetch(`${BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
+        
+        if (!currentResponse.ok) {
+            throw new Error(`City "${city}" not found. Please check the spelling.`);
+        }
+        const currentData = await currentResponse.json();
 
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Weather API Error: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .catch(error => {
-      console.error('Failed to fetch weather data:', error.message);
-      throw error;
-    });
+        // 3. Fetch 5-Day Forecast
+        const forecastResponse = await fetch(`${BASE_URL}/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
+        
+        if (!forecastResponse.ok) {
+            throw new Error('Unable to fetch forecast data.');
+        }
+        const forecastData = await forecastResponse.json();
+
+        // 4. Update the UI
+        updateUI(currentData, forecastData);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Error: ' + error.message);
+    }
 }
 
-/**
- * Fetch 5-day forecast for a given city
- * @param {string} city - The city name to fetch forecast for
- * @returns {Promise<Object>} - Promise resolving to forecast data JSON
- */
-function getForecastByCity(city) {
-  if (!city || typeof city !== 'string') {
-    return Promise.reject(new Error('City parameter must be a non-empty string'));
-  }
+// Function to update the DOM (User Interface)
+function updateUI(current, forecast) {
+    // A. Update Current Weather - Update specific elements instead of replacing HTML
+    const tempElement = document.getElementById('temp');
+    const humidityElement = document.getElementById('humidity');
+    const windElement = document.getElementById('wind');
+    
+    // Get weather icon/emoji based on weather condition
+    const weatherIcon = getWeatherIcon(current.weather[0].main);
+    
+    if (tempElement) {
+        tempElement.innerHTML = `<span class="weather-icon">${weatherIcon}</span> ${Math.round(current.main.temp)}°C`;
+    }
+    if (humidityElement) {
+        humidityElement.innerHTML = `<span class="weather-icon">💧</span> ${current.main.humidity}%`;
+    }
+    if (windElement) {
+        windElement.innerHTML = `<span class="weather-icon">💨</span> ${Math.round(current.wind.speed)} m/s`;
+    }
 
-  const url = `${BASE_URL}/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
-
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Forecast API Error: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .catch(error => {
-      console.error('Failed to fetch forecast data:', error.message);
-      throw error;
-    });
+    // B. Update 5-Day Forecast
+    // The API returns data every 3 hours. We pick one reading per day (every 8th item)
+    const forecastContainer = document.getElementById('forecast-container'); // Ensure this ID exists in HTML
+    if (forecastContainer) {
+        forecastContainer.innerHTML = ''; // Clear previous data
+        
+        // Filter to get roughly one reading per day (index 0, 8, 16, etc.)
+        for (let i = 0; i < forecast.list.length; i += 8) {
+            const day = forecast.list[i];
+            const date = new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            const icon = getWeatherIcon(day.weather[0].main);
+            
+            const card = document.createElement('div');
+            card.className = 'forecast-card'; // Make sure you have CSS for this class
+            card.innerHTML = `
+                <h4>${date}</h4>
+                <div class="forecast-icon" style="font-size: 2.5rem;">${icon}</div>
+                <p class="forecast-temp"><strong>${Math.round(day.main.temp)}°C</strong></p>
+                <p class="forecast-humidity">💧 ${day.main.humidity}%</p>
+            `;
+            forecastContainer.appendChild(card);
+        }
+    }
 }
 
-/**
- * Fetch weather data by latitude and longitude
- * @param {number} lat - Latitude coordinate
- * @param {number} lon - Longitude coordinate
- * @returns {Promise<Object>} - Promise resolving to weather data JSON
- */
-function getWeatherByCoords(lat, lon) {
-  if (typeof lat !== 'number' || typeof lon !== 'number') {
-    return Promise.reject(new Error('Latitude and longitude must be numbers'));
-  }
-
-  const url = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
-
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Weather API Error: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .catch(error => {
-      console.error('Failed to fetch weather data by coordinates:', error.message);
-      throw error;
-    });
+// Function to get weather emoji/icon based on weather condition
+function getWeatherIcon(weatherCondition) {
+    const condition = weatherCondition.toLowerCase();
+    
+    if (condition.includes('clear') || condition.includes('sunny')) return '☀️';
+    if (condition.includes('cloud')) return '☁️';
+    if (condition.includes('rain')) return '🌧️';
+    if (condition.includes('snow')) return '❄️';
+    if (condition.includes('wind')) return '💨';
+    if (condition.includes('fog') || condition.includes('mist')) return '🌫️';
+    if (condition.includes('thunder') || condition.includes('storm')) return '⛈️';
+    if (condition.includes('drizzle')) return '🌦️';
+    
+    return '🌤️'; // Default
 }
 
-// Export functions for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    getWeatherByCity,
-    getForecastByCity,
-    getWeatherByCoords
-  };
+// Export the function so app.js can use it
+// Note: If you are not using modules in HTML (<script type="module">), 
+// just attach it to window or ensure api.js loads before app.js
+window.getWeather = getWeather;
+
+// Load default city on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Loading default weather for Colombo...');
+    getWeather('Colombo');
+});
+
+
+        // 2. Fetch Current Weather
+        const currentResponse = await fetch(`${BASE_URL}/weather?q=${city}&appid=${API_KEY}&units=metric`);
+        
+        if (!currentResponse.ok) {
+            throw new Error('City not found');
+        }
+        const currentData = await currentResponse.json();
+
+        // 3. Fetch 5-Day Forecast
+        const forecastResponse = await fetch(`${BASE_URL}/forecast?q=${city}&appid=${API_KEY}&units=metric`);
+        const forecastData = await forecastResponse.json();
+
+        // 4. Update the UI
+        updateUI(currentData, forecastData);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Error: ' + error.message);
+    }
 }
+
+// Function to update the DOM (User Interface)
+function updateUI(current, forecast) {
+    // A. Update Current Weather
+    const weatherContainer = document.getElementById('current-weather'); // Ensure this ID exists in HTML
+    if (weatherContainer) {
+        weatherContainer.innerHTML = `
+            <h3>${current.name} (${new Date().toLocaleDateString()})</h3>
+            <p>Temp: ${current.main.temp}°C</p>
+            <p>Wind: ${current.wind.speed} m/s</p>
+            <p>Humidity: ${current.main.humidity}%</p>
+        `;
+    }
+
+    // B. Update 5-Day Forecast
+    // The API returns data every 3 hours. We pick one reading per day (every 8th item)
+    const forecastContainer = document.getElementById('forecast-container'); // Ensure this ID exists in HTML
+    if (forecastContainer) {
+        forecastContainer.innerHTML = ''; // Clear previous data
+        
+        // Filter to get roughly one reading per day (index 0, 8, 16, etc.)
+        for (let i = 0; i < forecast.list.length; i += 8) {
+            const day = forecast.list[i];
+            const date = new Date(day.dt * 1000).toLocaleDateString();
+            
+            const card = document.createElement('div');
+            card.className = 'forecast-card'; // Make sure you have CSS for this class
+            card.innerHTML = `
+                <h4>${date}</h4>
+                <p>Temp: ${day.main.temp}°C</p>
+                <p>Hum: ${day.main.humidity}%</p>
+            `;
+            forecastContainer.appendChild(card);
+        }
+    }
+}
+
+
+window.getWeather = getWeather;
+
+
+
+

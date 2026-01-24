@@ -30,22 +30,23 @@ function handleSearch(event) {
   console.log('Searching for city:', cityName);
 
   // Call API to fetch weather data
-  getWeatherByCity(cityName)
-    .then(data => {
-      console.log('Weather data received:', data);
-      // TODO: Update UI with weather data
-      displayWeather(data);
-    })
-    .catch(error => {
-      console.error('Error fetching weather:', error.message);
-      alert('Unable to fetch weather data. Please check the city name and try again.');
-    });
+  getWeather(cityName);
 }
 
 // ========== Event Listeners ==========
 // Add event listener to search button via form submission
 if (searchForm) {
   searchForm.addEventListener('submit', handleSearch);
+}
+
+// Add Enter key support on the input field
+if (cityInput) {
+  cityInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSearch(event);
+    }
+  });
 }
 
 // Optional: Add keyboard support for direct button click
@@ -90,9 +91,21 @@ function displayWeather(data) {
   console.log('Weather display updated');
 }
 
-// ========== Initialization ==========
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Weather Dashboard initialized');
-  // Focus the input field for better UX
-  cityInput.focus();
+document.addEventListener('DOMContentLoaded', () => {
+    const searchBtn = document.getElementById('search-btn'); // Check your HTML ID
+    const cityInput = document.getElementById('city-input'); // Check your HTML ID
+
+    searchBtn.addEventListener('click', () => {
+        const city = cityInput.value.trim();
+        if (city) {
+            // Call the function from api.js
+            window.getWeather(city); 
+        } else {
+            alert('Please enter a city name');
+        }
+    });
 });
+
+
+
+
