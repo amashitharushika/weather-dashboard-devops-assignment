@@ -30,22 +30,23 @@ function handleSearch(event) {
   console.log('Searching for city:', cityName);
 
   // Call API to fetch weather data
-  getWeatherByCity(cityName)
-    .then(data => {
-      console.log('Weather data received:', data);
-      // TODO: Update UI with weather data
-      displayWeather(data);
-    })
-    .catch(error => {
-      console.error('Error fetching weather:', error.message);
-      alert('Unable to fetch weather data. Please check the city name and try again.');
-    });
+  getWeather(cityName);
 }
 
 // ========== Event Listeners ==========
 // Add event listener to search button via form submission
 if (searchForm) {
   searchForm.addEventListener('submit', handleSearch);
+}
+
+// Add Enter key support on the input field
+if (cityInput) {
+  cityInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSearch(event);
+    }
+  });
 }
 
 // Optional: Add keyboard support for direct button click
