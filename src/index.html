@@ -3,13 +3,22 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Weather Dashboard</title>
+		<title>Cloud & Clear - Weather Dashboard</title>
 		<link rel="stylesheet" href="./styles/style.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@700&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<header class="site-header">
 			<div class="container header-inner">
-				<h1 class="site-title">Weather Dashboard</h1>
+				<div class="header-title-group">
+				<img src="./assets/logo.png" alt="Cloud & Clear Logo" class="site-logo">
+				<div class="header-text">
+					<h1 class="site-title">Cloud & Clear</h1>
+					<p class="site-slogan">Because guessing the weather never works…</p>
+				</div>
+				</div>
 				<form id="search-form" class="search-form" role="search" aria-label="Search for city">
 					<label for="city-input" class="visually-hidden">City Name</label>
 					<input id="city-input" name="city" type="search" placeholder="City Name" required aria-required="true">
