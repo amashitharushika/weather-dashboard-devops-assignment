@@ -210,12 +210,13 @@ main {
 
 /* ========== CURRENT WEATHER SECTION ========== */
 .current-weather {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(30, 86, 49, 0.15);
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(164, 222, 2, 0.3);
 }
 
 #current-weather-heading {
@@ -238,14 +239,14 @@ main {
   align-items: center;
   text-align: center;
   padding: 1.5rem;
-  background: #f0f9e8;
+  background: rgba(164, 222, 2, 0.15);
   border-radius: 8px;
   border-left: 4px solid #A4DE02;
   transition: all 0.3s ease;
 }
 
 .weather-item:hover {
-  background: #e8f5d9;
+  background: rgba(164, 222, 2, 0.25);
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(164, 222, 2, 0.2);
 }
@@ -267,11 +268,12 @@ main {
 
 /* ========== FORECAST SECTION ========== */
 .forecast {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(30, 86, 49, 0.15);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(164, 222, 2, 0.3);
 }
 
 #forecast-heading {
@@ -294,7 +296,7 @@ main {
   flex: 1;
   min-width: 140px;
   max-width: 200px;
-  background: linear-gradient(135deg, #e8f5d9 0%, #f0f9e8 100%);
+  background: rgba(164, 222, 2, 0.15);
   border: 2px solid #A4DE02;
   border-radius: 8px;
   padding: 1.5rem;
@@ -303,7 +305,7 @@ main {
 }
 
 .forecast-container > div:hover {
-  background: linear-gradient(135deg, #dff1cc 0%, #e8f5d9 100%);
+  background: rgba(164, 222, 2, 0.25);
   transform: translateY(-6px);
   box-shadow: 0 8px 16px rgba(164, 222, 2, 0.2);
   border-color: #76BA1B;
