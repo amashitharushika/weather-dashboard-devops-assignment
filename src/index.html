@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Weather Dashboard</title>
+		<link rel="stylesheet" href="./styles/style.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="container header-inner">
+				<h1 class="site-title">Weather Dashboard</h1>
+				<form id="search-form" class="search-form" role="search" aria-label="Search for city">
+					<label for="city-input" class="visually-hidden">City Name</label>
+					<input id="city-input" name="city" type="search" placeholder="City Name" required aria-required="true">
+					<button id="search-button" type="submit">Search</button>
+				</form>
+			</div>
+		</header>
+
+		<main class="container main-content">
+			<section id="current-weather" class="current-weather" aria-labelledby="current-weather-heading">
+				<h2 id="current-weather-heading">Current Weather</h2>
+				<div class="weather-grid">
+					<div class="weather-item">
+						<span class="label">Temperature</span>
+						<span id="temp" class="value">—</span>
+					</div>
+					<div class="weather-item">
+						<span class="label">Humidity</span>
+						<span id="humidity" class="value">—</span>
+					</div>
+					<div class="weather-item">
+						<span class="label">Wind</span>
+						<span id="wind" class="value">—</span>
+					</div>
+				</div>
+			</section>
+
+			<section id="forecast" class="forecast" aria-labelledby="forecast-heading">
+				<h2 id="forecast-heading">5-Day Forecast</h2>
+				<div id="forecast-container" class="forecast-container" role="list">
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="container">
+				<small>&copy; <span id="year"></span> Weather Dashboard</small>
+			</div>
+		</footer>
+
+		<script src="./scripts/app.js" defer></script>
+		<script>
+			(function(){
+				var y = document.getElementById('year');
+				if(y) y.textContent = new Date().getFullYear();
+			})();
+		</script>
+	</body>
+</html>
+
