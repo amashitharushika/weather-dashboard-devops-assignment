@@ -1,12 +1,15 @@
 const API_KEY = 'f2f31dec0301180816db233799499d75'; 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
-// Function to fetch weather data
+/**
+ * Fetches weather data from OpenWeatherMap API
+ * @param {string} city - The city name to fetch weather for
+ */
 async function getWeather(city) {
     try {
-        console.log(`Fetching weather for: ${city}`); // Debugging log
+        console.log(`Fetching weather for: ${city}`);
 
-        // 2. Fetch Current Weather - Use encodeURIComponent for proper encoding
+        // Fetch Current Weather
         const currentResponse = await fetch(`${BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
         
         if (!currentResponse.ok) {
@@ -14,7 +17,7 @@ async function getWeather(city) {
         }
         const currentData = await currentResponse.json();
 
-        // 3. Fetch 5-Day Forecast
+        // Fetch 5-Day Forecast
         const forecastResponse = await fetch(`${BASE_URL}/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
         
         if (!forecastResponse.ok) {
@@ -22,8 +25,9 @@ async function getWeather(city) {
         }
         const forecastData = await forecastResponse.json();
 
-        // 4. Update the UI
+        // Update the UI
         updateUI(currentData, forecastData);
+        console.log('Weather data successfully displayed');
 
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -31,14 +35,21 @@ async function getWeather(city) {
     }
 }
 
-// Function to update the DOM (User Interface)
+/**
+ * Updates the UI with weather data
+ * @param {object} current - Current weather data
+ * @param {object} forecast - 5-day forecast data
+ */
 function updateUI(current, forecast) {
-    // A. Update Current Weather - Update specific elements instead of replacing HTML
+    // Hide placeholder text in forecast container
+    const placeholders = document.querySelectorAll('.placeholder-text');
+    placeholders.forEach(p => p.style.display = 'none');
+    
+    // Update Current Weather elements
     const tempElement = document.getElementById('temp');
     const humidityElement = document.getElementById('humidity');
     const windElement = document.getElementById('wind');
     
-    // Get weather icon/emoji based on weather condition
     const weatherIcon = getWeatherIcon(current.weather[0].main);
     
     if (tempElement) {
@@ -51,20 +62,19 @@ function updateUI(current, forecast) {
         windElement.innerHTML = `<span class="weather-icon">💨</span> ${Math.round(current.wind.speed)} m/s`;
     }
 
-    // B. Update 5-Day Forecast
-    // The API returns data every 3 hours. We pick one reading per day (every 8th item)
-    const forecastContainer = document.getElementById('forecast-container'); // Ensure this ID exists in HTML
+    // Update 5-Day Forecast
+    const forecastContainer = document.getElementById('forecast-container');
     if (forecastContainer) {
-        forecastContainer.innerHTML = ''; // Clear previous data
+        forecastContainer.innerHTML = '';
         
-        // Filter to get roughly one reading per day (index 0, 8, 16, etc.)
+        // Get one reading per day (every 8th item = 24 hours)
         for (let i = 0; i < forecast.list.length; i += 8) {
             const day = forecast.list[i];
             const date = new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
             const icon = getWeatherIcon(day.weather[0].main);
             
             const card = document.createElement('div');
-            card.className = 'forecast-card'; // Make sure you have CSS for this class
+            card.className = 'forecast-card';
             card.innerHTML = `
                 <h4>${date}</h4>
                 <div class="forecast-icon" style="font-size: 2.5rem;">${icon}</div>
@@ -76,7 +86,11 @@ function updateUI(current, forecast) {
     }
 }
 
-// Function to get weather emoji/icon based on weather condition
+/**
+ * Returns weather emoji based on weather condition
+ * @param {string} weatherCondition - The weather condition from API
+ * @returns {string} - Weather emoji
+ */
 function getWeatherIcon(weatherCondition) {
     const condition = weatherCondition.toLowerCase();
     
@@ -92,9 +106,7 @@ function getWeatherIcon(weatherCondition) {
     return '🌤️'; // Default
 }
 
-// Export the function so app.js can use it
-// Note: If you are not using modules in HTML (<script type="module">), 
-// just attach it to window or ensure api.js loads before app.js
+// Export function for use in app.js
 window.getWeather = getWeather;
 
 // Load default city on page load
@@ -102,67 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Loading default weather for Colombo...');
     getWeather('Colombo');
 });
-
-
-        // 2. Fetch Current Weather
-        const currentResponse = await fetch(`${BASE_URL}/weather?q=${city}&appid=${API_KEY}&units=metric`);
-        
-        if (!currentResponse.ok) {
-            throw new Error('City not found');
-        }
-        const currentData = await currentResponse.json();
-
-        // 3. Fetch 5-Day Forecast
-        const forecastResponse = await fetch(`${BASE_URL}/forecast?q=${city}&appid=${API_KEY}&units=metric`);
-        const forecastData = await forecastResponse.json();
-
-        // 4. Update the UI
-        updateUI(currentData, forecastData);
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        alert('Error: ' + error.message);
-    }
-}
-
-// Function to update the DOM (User Interface)
-function updateUI(current, forecast) {
-    // A. Update Current Weather
-    const weatherContainer = document.getElementById('current-weather'); // Ensure this ID exists in HTML
-    if (weatherContainer) {
-        weatherContainer.innerHTML = `
-            <h3>${current.name} (${new Date().toLocaleDateString()})</h3>
-            <p>Temp: ${current.main.temp}°C</p>
-            <p>Wind: ${current.wind.speed} m/s</p>
-            <p>Humidity: ${current.main.humidity}%</p>
-        `;
-    }
-
-    // B. Update 5-Day Forecast
-    // The API returns data every 3 hours. We pick one reading per day (every 8th item)
-    const forecastContainer = document.getElementById('forecast-container'); // Ensure this ID exists in HTML
-    if (forecastContainer) {
-        forecastContainer.innerHTML = ''; // Clear previous data
-        
-        // Filter to get roughly one reading per day (index 0, 8, 16, etc.)
-        for (let i = 0; i < forecast.list.length; i += 8) {
-            const day = forecast.list[i];
-            const date = new Date(day.dt * 1000).toLocaleDateString();
-            
-            const card = document.createElement('div');
-            card.className = 'forecast-card'; // Make sure you have CSS for this class
-            card.innerHTML = `
-                <h4>${date}</h4>
-                <p>Temp: ${day.main.temp}°C</p>
-                <p>Hum: ${day.main.humidity}%</p>
-            `;
-            forecastContainer.appendChild(card);
-        }
-    }
-}
-
-
-window.getWeather = getWeather;
 
 
 
