@@ -12,6 +12,7 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
@@ -22,6 +23,19 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../assets/Background_image.jpeg') center / cover no-repeat fixed;
+  z-index: -1;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.25);
 }
 
 main {
@@ -54,6 +68,9 @@ main {
   color: white;
   padding: 2rem 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 100;
+  flex-shrink: 0;
 }
 
 .header-inner {
@@ -125,6 +142,37 @@ main {
   transform: translateY(0);
 }
 
+/* ========== BACKGROUND BANNER ========== */
+.background-banner {
+  background-image: url('../assets/Background_image.jpeg');
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* ========== CONTENT WRAPPER ========== */
+.content-wrapper {
+  position: relative;
+  z-index: 20;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 /* ========== MAIN CONTENT ========== */
 .main-content {
   padding: 2rem 1rem;
@@ -132,11 +180,12 @@ main {
 
 /* ========== CURRENT WEATHER SECTION ========== */
 .current-weather {
-  background: white;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 #current-weather-heading {
@@ -188,10 +237,11 @@ main {
 
 /* ========== FORECAST SECTION ========== */
 .forecast {
-  background: white;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 #forecast-heading {
@@ -255,8 +305,9 @@ main {
   color: white;
   text-align: center;
   padding: 1.5rem;
-  margin-top: auto;
   font-size: 0.875rem;
+  z-index: 100;
+  flex-shrink: 0;
 }
 
 /* ========== RESPONSIVE DESIGN ========== */
