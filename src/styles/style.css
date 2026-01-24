@@ -363,7 +363,7 @@ main {
 }
 
 .forecast-temp {
-  font-size: 1.9rem;
+  font-size: 2.1rem;
   color: #000000;
   margin: 0.5rem 0;
   font-weight: 800;
@@ -371,7 +371,7 @@ main {
 }
 
 .forecast-humidity {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #000000;
   margin: 0.3rem 0;
   font-weight: 600;
