@@ -81,11 +81,41 @@ main {
   text-align: center;
 }
 
+.header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.site-logo {
+  height: 80px;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  mix-blend-mode: lighten;
+  background: transparent;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .site-title {
-  font-size: 2.5rem;
+  font-family: 'Inria Serif', serif;
+  font-size: 3rem;
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.5px;
+}
+
+.site-slogan {
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.95;
+  font-style: italic;
 }
 
 /* ========== SEARCH FORM ========== */
