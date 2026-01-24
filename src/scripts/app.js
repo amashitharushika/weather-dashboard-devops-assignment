@@ -11,16 +11,14 @@ const searchButton = document.getElementById('search-button');
 // ========== Search Handler Function ==========
 /**
  * Handles the search form submission
- * Validates input, fetches weather data from API, and logs the result
+ * Validates input, fetches weather data from API
  * @param {Event} event - The form submission event
  */
 function handleSearch(event) {
   event.preventDefault();
 
-  // Get the trimmed input value
   const cityName = cityInput.value.trim();
 
-  // Validate input
   if (cityName === '') {
     alert('Please enter a city name to search.');
     cityInput.focus();
@@ -28,18 +26,16 @@ function handleSearch(event) {
   }
 
   console.log('Searching for city:', cityName);
-
-  // Call API to fetch weather data
-  getWeather(cityName);
+  window.getWeather(cityName);
 }
 
 // ========== Event Listeners ==========
-// Add event listener to search button via form submission
+// Add event listener to search form submission (Enter key support)
 if (searchForm) {
   searchForm.addEventListener('submit', handleSearch);
 }
 
-// Add Enter key support on the input field
+// Add explicit Enter key support on input field
 if (cityInput) {
   cityInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
@@ -49,7 +45,7 @@ if (cityInput) {
   });
 }
 
-// Optional: Add keyboard support for direct button click
+// Add click listener to search button
 if (searchButton) {
   searchButton.addEventListener('click', function(event) {
     event.preventDefault();
@@ -57,54 +53,12 @@ if (searchButton) {
   });
 }
 
-// Clear any error states when user starts typing
+// Clear error messages when user starts typing
 if (cityInput) {
   cityInput.addEventListener('input', function() {
-    // Can be used to remove error messages or styles in the future
+    // Can be used to remove error styles in the future
   });
 }
-
-// ========== Display Weather Function ==========
-/**
- * Updates the UI with weather data
- * @param {Object} data - Weather data from API
- */
-function displayWeather(data) {
-  if (!data) return;
-
-  const tempElement = document.getElementById('temp');
-  const humidityElement = document.getElementById('humidity');
-  const windElement = document.getElementById('wind');
-
-  if (tempElement) {
-    tempElement.textContent = `${Math.round(data.main.temp)}°C`;
-  }
-
-  if (humidityElement) {
-    humidityElement.textContent = `${data.main.humidity}%`;
-  }
-
-  if (windElement) {
-    windElement.textContent = `${Math.round(data.wind.speed)} m/s`;
-  }
-
-  console.log('Weather display updated');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const searchBtn = document.getElementById('search-btn'); // Check your HTML ID
-    const cityInput = document.getElementById('city-input'); // Check your HTML ID
-
-    searchBtn.addEventListener('click', () => {
-        const city = cityInput.value.trim();
-        if (city) {
-            // Call the function from api.js
-            window.getWeather(city); 
-        } else {
-            alert('Please enter a city name');
-        }
-    });
-});
 
 
 
