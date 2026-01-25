@@ -8,13 +8,13 @@ This project is a CI/CD demonstration using GitHub Actions.
 
 ## Group Information
 * **Student 1:** R. Amashi Tharushika - ITBIN-2313-0086 - Role: DevOps Engineer
-* **Student 2:** H.T.D. Rajapaksha - ITBIN-2313-0087 - Role: Full-Stack Developer
+* **Student 2:** H. T. D. Rajapaksha - ITBIN-2313-0087 - Role: Full-Stack Developer
 
 ## Project Description
 A responsive weather dashboard that allows users to search for cities and view current weather conditions along with a 5-day forecast. Integrated with OpenWeatherMap API.
 
 ## Live Deployment
-**Live URL:** https://vercel.com/amashis-projects-47451755
+**Live URL:** https://weather-dashboard-devops-assignment-beivujhno.vercel.app/
 
 ## Technologies Used
 * HTML5, CSS3, JavaScript
