@@ -1,32 +1,28 @@
-const API_KEY = 'f2f31dec0301180816db233799499d75'; 
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+ const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 /**
- * Fetches weather data from OpenWeatherMap API
+ * Fetches weather data from our internal Serverless Function
+ * This hides the API key from the user.
  * @param {string} city - The city name to fetch weather for
  */
 async function getWeather(city) {
     try {
         console.log(`Fetching weather for: ${city}`);
 
-        // Fetch Current Weather
-        const currentResponse = await fetch(`${BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
-        
-        if (!currentResponse.ok) {
-            throw new Error(`City "${city}" not found. Please check the spelling.`);
-        }
-        const currentData = await currentResponse.json();
+        // Call OUR OWN API route (api/weather.js)
+        // We only need to pass the city name
+        const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
 
-        // Fetch 5-Day Forecast
-        const forecastResponse = await fetch(`${BASE_URL}/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
-        
-        if (!forecastResponse.ok) {
-            throw new Error('Unable to fetch forecast data.');
+        if (!response.ok) {
+            throw new Error(`City "${city}" not found or API error.`);
         }
-        const forecastData = await forecastResponse.json();
 
-        // Update the UI
-        updateUI(currentData, forecastData);
+        // The serverless function returns both current and forecast data combined
+        const data = await response.json();
+
+        // Update the UI with the data we got back
+        // Note: data.current and data.forecast match the structure in api/weather.js
+        updateUI(data.current, data.forecast);
         console.log('Weather data successfully displayed');
 
     } catch (error) {
@@ -44,7 +40,16 @@ function updateUI(current, forecast) {
     // Hide placeholder text in forecast container
     const placeholders = document.querySelectorAll('.placeholder-text');
     placeholders.forEach(p => p.style.display = 'none');
-    
+   
+    // Update heading with City Name and Full Country Name
+    const headingElement = document.getElementById('current-weather-heading');
+    if (headingElement) {
+        const cityName = current.name;
+        const countryCode = current.sys.country;
+        const countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(countryCode);
+        headingElement.textContent = `Current Weather: ${cityName}, ${countryName}`;
+    }
+
     // Update Current Weather elements
     const tempElement = document.getElementById('temp');
     const humidityElement = document.getElementById('humidity');
