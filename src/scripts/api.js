@@ -40,7 +40,16 @@ function updateUI(current, forecast) {
     // Hide placeholder text in forecast container
     const placeholders = document.querySelectorAll('.placeholder-text');
     placeholders.forEach(p => p.style.display = 'none');
-    
+   
+    // Update heading with City Name and Full Country Name
+    const headingElement = document.getElementById('current-weather-heading');
+    if (headingElement) {
+        const cityName = current.name;
+        const countryCode = current.sys.country;
+        const countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(countryCode);
+        headingElement.textContent = `Current Weather: ${cityName}, ${countryName}`;
+    }
+
     // Update Current Weather elements
     const tempElement = document.getElementById('temp');
     const humidityElement = document.getElementById('humidity');
