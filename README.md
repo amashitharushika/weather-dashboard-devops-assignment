@@ -14,8 +14,7 @@ This project is a CI/CD demonstration using GitHub Actions.
 A responsive weather dashboard that allows users to search for cities and view current weather conditions along with a 5-day forecast. Integrated with OpenWeatherMap API.
 
 ## Live Deployment
-**Live URL:** https://weather-dashboard-devops-assignment-beivujhno.vercel.app/
-
+**Live URL:**  https://weather-dashboard-devops-assignment.vercel.app/
 ## Technologies Used
 * HTML5, CSS3, JavaScript
 * GitHub Actions (CI/CD)
