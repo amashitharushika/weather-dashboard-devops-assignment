@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  weather-app:
+    build: .
+    container_name: weather-dashboard-container
+    ports:
+      - "3000:3000"
+    environment:
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+    restart: unless-stopped
+    networks:
+      - weather-net
+    # Security: Read-only filesystem (optional, advanced)
+    # read_only: true 
+
+networks:
+  weather-net:
+    driver: bridge
