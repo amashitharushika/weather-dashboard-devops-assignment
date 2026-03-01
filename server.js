@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 // 1. Load Secrets
 dotenv.config();
+console.log("Loaded API Key:", process.env.OPENWEATHER_API_KEY);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
