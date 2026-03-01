@@ -34,25 +34,25 @@ We implemented the following branching strategy:
 * `develop` - Integration branch (Used for testing interactions between features)
 * `feature/**` - Feature development branches
 
-## Docker Containerised Version (Assignment 3)
+## Docker Containerised Version 
 This repository now includes:
- *Dockerfile (multi-stage build)
- *docker-compose.yml (service orchestration)
- *.dockerignore (build optimisation)
- *Secure environment variable management
- *The application runs inside a Node.js container using Express as the backend server.
+ * Dockerfile (multi-stage build)
+ * docker-compose.yml (service orchestration)
+ * .dockerignore (build optimisation)
+ * Secure environment variable management
+ * The application runs inside a Node.js container using Express as the backend server.
 
 ## Prerequisites
 Before running the containerised application, ensure you have:
- *Docker Desktop (Windows/Mac) or Docker Engine (Linux)
- *Docker Compose (included in Docker Desktop)
- *Node.js (version 18 or higher)
- *Git
+ * Docker Desktop (Windows/Mac) or Docker Engine (Linux)
+ * Docker Compose (included in Docker Desktop)
+ * Node.js (version 18 or higher)
+ * Git
 
 **You can verify installation with:**
-docker --version
-docker-compose --version
-Environment Variables
+ * docker --version
+ * docker-compose --version
+ * Environment Variables
 
 **This application requires an OpenWeatherMap API key.**
 1. Create a .env file in the root directory:
@@ -60,7 +60,7 @@ Environment Variables
 
 **Important:**
 **Do NOT commit the .env file to GitHub.**
-It is excluded using .gitignore and .dockerignore.
+**It is excluded using .gitignore and .dockerignore.**
 
 ## Build and Run Instructions
 **Option 1** – Using Docker Compose (Recommended)
