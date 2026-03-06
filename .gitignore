@@ -22,5 +22,5 @@ yarn-error.log*
 *.swo
 
 # Environment variables (Security)
+.env.local.env
 .env
-.env.local
