@@ -2,9 +2,25 @@
   "buildCommand": "npm run build",
   "outputDirectory": "src",
   "public": true,
-  "functions": {
-    "api/weather.js": {
-      "runtime": "nodejs18.x"
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/api/weather",
+      "methods": ["GET"],
+      "dest": "/api/weather.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/src/index.html"
+    }
+  ]
 }
