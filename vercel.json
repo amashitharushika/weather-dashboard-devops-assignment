@@ -22,8 +22,5 @@
       "src": "/",
       "dest": "/src/index.html"
     }
-  ],
-  "env": {
-    "OPENWEATHER_API_KEY": "@openweather_api_key"
-  }
+  ]
 }
