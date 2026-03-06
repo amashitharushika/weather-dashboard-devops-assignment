@@ -1,9 +1,29 @@
 {
-    "outputDirectory": "src",
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "/api/$1"
-        }
-    ]
+  "buildCommand": "npm run build",
+  "outputDirectory": "src",
+  "public": true,
+  "rewrites": [
+    {
+      "source": "/api/weather",
+      "destination": "/api/weather.js"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/weather",
+      "methods": ["GET"],
+      "dest": "/api/weather.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/src/index.html"
+    }
+  ],
+  "env": {
+    "OPENWEATHER_API_KEY": "@openweather_api_key"
+  }
 }
