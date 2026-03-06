@@ -1,9 +1,25 @@
 {
-    "outputDirectory": "src",
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "/api/$1"
-        }
-    ]
+  "outputDirectory": "src",
+  "public": true,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/weather",
+      "methods": ["GET"],
+      "dest": "/api/weather.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/src/index.html"
+    }
+  ]
 }
